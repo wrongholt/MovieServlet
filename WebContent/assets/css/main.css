@@ -6,4 +6,12 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  */
- .container {width:768px;}
+ .container {
+ width:768px;
+ color:red;
+ }
+ 
+ body{
+  background-color: #42f442;
+
+ }

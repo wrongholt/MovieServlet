@@ -9,12 +9,12 @@ page is not found in our web application.">
 <body>
 	<div class="container">
 		<div class="hero-unit">
-		<h1>404 Sorry :[</h1>
+		<h1>404 Sorry Oh Row</h1>
 		</div>
 <%@ include file="includes/navigation.jsp" %>		
 	
 	<div class="container">
-		<p>This is not the page your are looking for.</p>
+		<p>This is not the page your are looking for.  Please yell at the page and than:</p>
 		<p>To continue, click the Back button.</p>
 		
 	</div>

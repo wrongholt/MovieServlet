@@ -14,7 +14,7 @@
 <%@ include file="includes/navigation.jsp" %>		
 	
 	<div class="container">
-		<p>Houston, we've got a problem.</p>
+		<p>There is a major problem and possibly your computer might self-destruct in 3.2.1... Just Kidding!.</p>
 		<c:choose>
 			<c:when test="${message !=null}">
 				<p>${message}</p>

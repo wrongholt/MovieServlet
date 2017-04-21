@@ -41,7 +41,7 @@ public class Movie implements Serializable{
 	public void setDirectorName(String directorName) {
 		this.directorName = directorName;
 	}
-	public int getMinutes() {
+	public int getLengthInMinutes() {
 		return lengthInMinutes;
 	}
 	public void setLengthInMinutes(int lengthInMinutes) {
