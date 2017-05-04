@@ -2,9 +2,8 @@ package edu.cvtc.web.servlets;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,35 +13,35 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
-import edu.cvtc.web.comparator.MinutesComparator;
 import edu.cvtc.web.model.Movie;
 import edu.cvtc.web.util.WorkbookUtility;
 
 /**
- * Servlet implementation class ViewMoviesController
+ * Servlet implementation class SearchController
  */
-@WebServlet("/ViewMovies")
-public class ViewMoviesController extends HttpServlet {
+@WebServlet("/Search")
+public class SearchController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ViewMoviesController() {
-        super();
-    }
 
-
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-String target = null;
 		
+		String target = null;
 		
 		try {
 			final String filePath = getServletContext().getRealPath(WorkbookUtility.INPUT_FILE);
 			final File inputFile = new File(filePath);
-			final List<Movie> movies = WorkbookUtility.retrieveMoviesFromWorkbook(inputFile);
+			final List<Movie> people = WorkbookUtility.retrieveMoviesFromWorkbook(inputFile);
+			final String title = request.getParameter("title");
 			
-			request.setAttribute("movies", movies);
+			final List<Movie> filteredPeople = people
+													.stream()
+													.filter((movie) -> movie.getTitle().equals(title))
+													.collect(Collectors.toList());			
+			
+			request.setAttribute("people", filteredPeople);
 			
 			target = "view-all.jsp";
 			
@@ -51,34 +50,13 @@ String target = null;
 			request.setAttribute("message", "The workbook file has an invalid format.");
 			target = "error.jsp";
 		}
-		
-		
 		request.getRequestDispatcher(target).forward(request, response);
+		
 	}
-	private void sort(final List<Movie> movies, final String sortType) {
 
-		switch(sortType){
-		case "title":
-			Collections.sort(movies, (movie1, movie2) -> movie1.getTitle().compareTo(movie2.getTitle()));
-			break;
-		case "directorName":
-			Collections.sort(movies, new Comparator<Movie>() {
-			@Override
-			public int compare(Movie movie1, Movie movie2){
-				return movie1.getDirectorName().compareTo(movie2.getDirectorName());
-			}
-				
-			});
-			break;
-		case "lengthInMinutes":
-			Collections.sort(movies, new MinutesComparator());
-			Collections.reverse(movies);
-			break;
-		default:
-			break;
-		}
-	}
-	
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
