@@ -19,15 +19,17 @@ public class Movie implements Serializable{
 	private String title;
 	private String directorName;
 	private Integer lengthInMinutes;
+	private String picture;
 	
 	public Movie(){
 		
 	}
 	
-	public Movie(String title, String directorName, int lengthInMinutes) {
+	public Movie(String title, String directorName, int lengthInMinutes, String picture) {
 		this.title = title;
 		this.directorName = directorName;
 		this.lengthInMinutes = lengthInMinutes;
+		this.picture = picture;
 	}
 	public String getTitle() {
 		return title;
@@ -46,6 +48,14 @@ public class Movie implements Serializable{
 	}
 	public void setLengthInMinutes(Integer lengthInMinutes) {
 		this.lengthInMinutes = lengthInMinutes;
+	}
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
 	}
 	
 

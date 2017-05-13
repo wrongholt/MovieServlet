@@ -16,12 +16,12 @@
 	
 	<div class="row">
 		<form action="Search" method="post">
-			<div class="col-md-6"">
+			<div class="col-md-6">
 			<label for ="title" id="titleLabel"><strong>Search by the Movie name:</strong></label>
 			<input name="title" id="titleInput">
 			<input type="submit" value="Search!" id="searchTitle">
 			</div>
-			<div class="col-md-6"">
+			<div class="col-md-6">
 			<label for ="directorName" id="directorLabel"><strong>Search by the Director name:</strong></label>
 			<input name="directorName" id="directorInput">
 			<input type="submit" value="Search!" id="serachDirector">

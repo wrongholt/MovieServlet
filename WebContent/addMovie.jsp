@@ -24,6 +24,9 @@
 			<label for="minutes"><strong>Length in Minutes:</strong> </label>
 			<input name="minutes">
 			<br>
+			<label for="picture"><strong>Picture URL:</strong> </label>
+			<input name="picture">
+			<br>
 			<input type="submit" value="Add Movie">
 		</form>
 	</div>

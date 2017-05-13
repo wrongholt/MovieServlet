@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 <head>
-	<title>Java Web Programming: Class List</title>
+	<title>Java Web Programming: Movie List</title>
 	<meta name="description" content ="This is an a JSP example that demonstrates how to output every person in our Excel spreadsheet
 	to a web page.">
 <%@ include file="includes/styles.jsp" %>
@@ -24,6 +24,8 @@
 					<div class="span4">
 					<h2>${movie.title}</h2>
 					<p>${movie.title} that was directed by ${movie.directorName} is ${movie.lengthInMinutes} minutes long.</p>
+					<br>
+					<img src ="${movie.picture}">
 					</div>
 				</c:forEach>
 			</c:otherwise>

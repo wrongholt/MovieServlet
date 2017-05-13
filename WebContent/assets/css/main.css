@@ -6,4 +6,12 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  */
- .container {width:1000px;}
+ .container{
+ width:1000px;
+ color:#0DD6FF;
+ background-color:#FF0000;
+ }
+ img{
+ height: 300px;
+ width:175px;
+ }

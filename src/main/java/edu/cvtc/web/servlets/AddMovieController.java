@@ -31,6 +31,7 @@ public class AddMovieController extends HttpServlet {
 	    	  final String title = request.getParameter("title");
 	    	  final String directorName = request.getParameter("directorName");
 	    	  final String minutesString = request.getParameter("minutes");
+	    	  final String picture = request.getParameter("picture");
 	    	  
 	    	  if(Strings.isNullOrEmpty(title) ||
 	    			  Strings.isNullOrEmpty(directorName) ||
@@ -40,7 +41,7 @@ public class AddMovieController extends HttpServlet {
 	    	  }else{
 	    		  try{
 	    			  final int minutes = Integer.parseInt(minutesString);
-	    		  final Movie movie = new Movie(title, directorName, minutes);
+	    		  final Movie movie = new Movie(title, directorName, minutes, picture);
 	    		  final MovieDao movieDao = new MovieDaoImpl();
 	    		  
 	    		  movieDao.insertMovie(movie);

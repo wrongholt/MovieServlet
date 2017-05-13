@@ -39,11 +39,13 @@ public class WorkbookUtility {
 			final Cell titleCell = row.getCell(0);
 			final Cell directorNameCell = row.getCell(1);
 			final Cell minutesCell = row.getCell(2);
+			final Cell pictureCell = row.getCell(3);
 						
 			final Movie movie = new Movie(
 					titleCell.getStringCellValue().trim(),
 					directorNameCell.getStringCellValue().trim(), 
-					(int) minutesCell.getNumericCellValue());
+					(int) minutesCell.getNumericCellValue(),
+					pictureCell.getStringCellValue().trim());
 			
 			movies.add(movie);
 		}

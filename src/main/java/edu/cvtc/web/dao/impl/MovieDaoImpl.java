@@ -27,7 +27,7 @@ import edu.cvtc.web.util.WorkbookUtility;
 public class MovieDaoImpl implements MovieDao {
 	private static final String SELECT_ALL_FROM_MOVIE = "select * from movie;";
 	private static final String DROP_TABLE_MOVIE = "drop table if exists movie;";
-	private static final String CREATE_TABLE_MOVIE = "create table movie (id integer primary key autoincrement, title text, directorName text, minutes integer);";
+	private static final String CREATE_TABLE_MOVIE = "create table movie (id integer primary key autoincrement, title text, directorName text, minutes integer, picture text);";
 	
 	@Override
 	public void populate(String filePath) throws MovieDaoException{
@@ -48,11 +48,12 @@ public class MovieDaoImpl implements MovieDao {
 			final List<Movie> movies = WorkbookUtility.retrieveMoviesFromWorkbook(inputFile);
 			
 			for(final Movie movie : movies){
-				final String insertValues = "insert into movie (title, directorName, minutes) "
+				final String insertValues = "insert into movie (title, directorName, minutes, picture) "
 						+ "values ("
 						+ "'" + movie.getTitle() + "', "
 						+ "'" + movie.getDirectorName() + "', "
-						+ movie.getLengthInMinutes() + ");";
+						+ movie.getLengthInMinutes() + ", '"
+								+ movie.getPicture() + "');";
 				
 				System.out.println(insertValues); 
 				
@@ -87,8 +88,9 @@ public class MovieDaoImpl implements MovieDao {
 			final String title = resultSet.getString("title");
 			final String directorName = resultSet.getString("directorName");
 			final Integer minutes = resultSet.getInt("minutes");
+			final String picture = resultSet.getString("picture");
 			
-			movies.add(new Movie(title, directorName, minutes));
+			movies.add(new Movie(title, directorName, minutes, picture));
 		}
 		
 		} catch (ClassNotFoundException | SQLException e) {
@@ -110,13 +112,14 @@ public class MovieDaoImpl implements MovieDao {
 			
 			connection =  DBUtility.createConnection();
 			
-			final String sqlStatement = "insert into movie(title, directorName, minutes) values (?,?,?);";
+			final String sqlStatement = "insert into movie(title, directorName, minutes, picture) values (?,?,?,?);";
 			
 			insertStatement = connection.prepareStatement(sqlStatement);
 			
 			insertStatement.setString(1, movie.getTitle());
 			insertStatement.setString(2, movie.getDirectorName());
 			insertStatement.setInt(3, movie.getLengthInMinutes());
+			insertStatement.setString(4,  movie.getPicture());
 			
 			insertStatement.setQueryTimeout(DBUtility.TIMEOUT);
 			
