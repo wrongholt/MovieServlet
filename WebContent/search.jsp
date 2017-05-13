@@ -14,11 +14,18 @@
 		</div>
 <%@ include file="includes/navigation.jsp" %>	
 	
-	<div class="container">
+	<div class="row">
 		<form action="Search" method="post">
-			<label for ="movieName"><strong>Search by the Movie name:</strong></label>
-			<input name="movieName">
-			<input type="submit" value="Search!">
+			<div class="col-md-6"">
+			<label for ="title" id="titleLabel"><strong>Search by the Movie name:</strong></label>
+			<input name="title" id="titleInput">
+			<input type="submit" value="Search!" id="searchTitle">
+			</div>
+			<div class="col-md-6"">
+			<label for ="directorName" id="directorLabel"><strong>Search by the Director name:</strong></label>
+			<input name="directorName" id="directorInput">
+			<input type="submit" value="Search!" id="serachDirector">
+			</div>
 		</form>
 	</div>
 <%@ include file="includes/footer.jsp" %>	

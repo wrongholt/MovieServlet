@@ -14,10 +14,11 @@ import edu.cvtc.web.model.Movie;
  */
 public interface MovieDao {
 
-void populate(String filePath) throws MovieDaoException;
+	void populate(String filePath) throws MovieDaoException;
 	
-	List<Movie> retrieveMovies();
+	List<Movie> retrieveMovies() throws MovieDaoException;
 	
-	void insertMovie(Movie movie);
+	void insertMovie(Movie movie) throws MovieDaoException;
+
 	
 }

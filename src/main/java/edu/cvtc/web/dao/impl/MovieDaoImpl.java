@@ -6,6 +6,7 @@ package edu.cvtc.web.dao.impl;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
+import edu.cvtc.web.dao.MovieDao;
 import edu.cvtc.web.model.Movie;
 import edu.cvtc.web.util.DBUtility;
 import edu.cvtc.web.util.WorkbookUtility;
@@ -22,7 +24,7 @@ import edu.cvtc.web.util.WorkbookUtility;
  * @author wrongholt
  *
  */
-public class MovieDaoImpl {
+public class MovieDaoImpl implements MovieDao {
 	private static final String SELECT_ALL_FROM_MOVIE = "select * from movie;";
 	private static final String DROP_TABLE_MOVIE = "drop table if exists movie;";
 	private static final String CREATE_TABLE_MOVIE = "create table movie (id integer primary key autoincrement, title text, directorName text, minutes integer);";
@@ -42,37 +44,36 @@ public class MovieDaoImpl {
 			statement.executeUpdate(DROP_TABLE_MOVIE);
 			statement.executeUpdate(CREATE_TABLE_MOVIE);
 			
-			//populate the person table using WorkbookUtility
 			final File inputFile = new File(filePath);
-			final List<Person> people = WorkbookUtility.retrieveMovieFromWorkbook(inputFile);
+			final List<Movie> movies = WorkbookUtility.retrieveMoviesFromWorkbook(inputFile);
 			
-			for(final Person person : people){
-				final String insertValues = "insert into person (title, directorName, minutes) "
+			for(final Movie movie : movies){
+				final String insertValues = "insert into movie (title, directorName, minutes) "
 						+ "values ("
-						+ "'" + person.getTitle() + "', "
-						+ "'" + person.getDirectorName() + "', "
-						+ person.getMinutes() + "');";
+						+ "'" + movie.getTitle() + "', "
+						+ "'" + movie.getDirectorName() + "', "
+						+ movie.getLengthInMinutes() + ");";
 				
-				System.out.println(insertValues); //Notes: Log message to Console so we can see data being added to database.
+				System.out.println(insertValues); 
 				
 				statement.executeUpdate(insertValues);
 			}
 			
 		} catch (ClassNotFoundException | SQLException | InvalidFormatException | IOException e) {
 			e.printStackTrace();
-			throw new PersonDaoException("Error: Unable to populate database.");
+			throw new MovieDaoException("Error: Unable to populate database.");
 		} finally {
 			DBUtility.closeConnections(connection, statement);
 		} 
 		
 	}
 
-	
-	public List<Movie> retrieveMovie() throws MovieDaoException {
+	@Override
+	public List<Movie> retrieveMovies() throws MovieDaoException {
 
 		Connection connection = null;
 		Statement statement = null;
-		final List<Movie> people = new ArrayList<>();
+		final List<Movie> movies = new ArrayList<>();
 		
 		try{
 			connection = DBUtility.createConnection();
@@ -80,31 +81,54 @@ public class MovieDaoImpl {
 			
 			statement.setQueryTimeout(DBUtility.TIMEOUT);
 			
-		final ResultSet resultSet = statement.executeQuery(SELECT_ALL_FROM_PERSON);
+		final ResultSet resultSet = statement.executeQuery(SELECT_ALL_FROM_MOVIE);
 		
 		while(resultSet.next()){
-			final String firstName = resultSet.getString("firstName");
-			final String lastName = resultSet.getString("lastName");
-			final int age = resultSet.getInt("age");
-			final String favoriteColor = resultSet.getString("favoriteColor");
+			final String title = resultSet.getString("title");
+			final String directorName = resultSet.getString("directorName");
+			final Integer minutes = resultSet.getInt("minutes");
 			
-			people.add(new Person(firstName, lastName, age, favoriteColor));
+			movies.add(new Movie(title, directorName, minutes));
 		}
 		
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-			throw new PersonDaoException("Error: Unable to retrieve people.");
+			throw new MovieDaoException("Error: Unable to retrieve movies.");
 		}finally{
 			DBUtility.closeConnections(connection, statement);
 		}
 		
-		return people;
+		return movies;
 	}
 
 	
-	@Override
-	public void insertPerson(Person person) throws PersonDaoException {
-
+	public void insertMovie(Movie movie) throws MovieDaoException {
+		Connection connection = null;
+		PreparedStatement insertStatement = null;
+		
+		try{
+			
+			connection =  DBUtility.createConnection();
+			
+			final String sqlStatement = "insert into movie(title, directorName, minutes) values (?,?,?);";
+			
+			insertStatement = connection.prepareStatement(sqlStatement);
+			
+			insertStatement.setString(1, movie.getTitle());
+			insertStatement.setString(2, movie.getDirectorName());
+			insertStatement.setInt(3, movie.getLengthInMinutes());
+			
+			insertStatement.setQueryTimeout(DBUtility.TIMEOUT);
+			
+			insertStatement.executeUpdate();
+		} catch (ClassNotFoundException | SQLException e) {
+			
+			e.printStackTrace();
+			
+			throw new MovieDaoException("Error: Unable to add this movie to the database.");
+		}finally{
+			DBUtility.closeConnections(connection, insertStatement);
+		}
 		
 	}
 

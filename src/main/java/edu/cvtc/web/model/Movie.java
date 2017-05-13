@@ -18,7 +18,7 @@ public class Movie implements Serializable{
 	
 	private String title;
 	private String directorName;
-	private int lengthInMinutes;
+	private Integer lengthInMinutes;
 	
 	public Movie(){
 		
@@ -41,10 +41,10 @@ public class Movie implements Serializable{
 	public void setDirectorName(String directorName) {
 		this.directorName = directorName;
 	}
-	public int getLengthInMinutes() {
+	public Integer getLengthInMinutes() {
 		return lengthInMinutes;
 	}
-	public void setLengthInMinutes(int lengthInMinutes) {
+	public void setLengthInMinutes(Integer lengthInMinutes) {
 		this.lengthInMinutes = lengthInMinutes;
 	}
 	

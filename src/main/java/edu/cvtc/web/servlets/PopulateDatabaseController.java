@@ -1,15 +1,16 @@
 package edu.cvtc.web.servlets;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.cvtc.web.dao.PersonDao;
-import edu.cvtc.web.dao.impl.PersonDaoException;
-import edu.cvtc.web.dao.impl.PersonDaoImpl;
+import edu.cvtc.web.dao.MovieDao;
+import edu.cvtc.web.dao.impl.MovieDaoException;
+import edu.cvtc.web.dao.impl.MovieDaoImpl;
 import edu.cvtc.web.util.WorkbookUtility;
 
 /**
@@ -28,13 +29,13 @@ public class PopulateDatabaseController extends HttpServlet {
 		
 		try {
 			final String filePath = getServletContext().getRealPath(WorkbookUtility.INPUT_FILE);
-			final PersonDao personDao = new PersonDaoImpl();
+			final MovieDao movieDao = new MovieDaoImpl();
 			
-			personDao.populate(filePath);
+			movieDao.populate(filePath);
 			
 			request.setAttribute("message", "Database populated...");
 			target = "success.jsp";
-		} catch (PersonDaoException e) {
+		} catch (MovieDaoException e) {
 			e.printStackTrace();
 			request.setAttribute("message", e.getMessage());
 			target = "error.jsp";
